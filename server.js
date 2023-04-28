@@ -17,7 +17,7 @@ mongoose.connect(`mongodb://${process.env.MONGO_URI}/mern-todo`,{
     .catch(console.error);
 
 // Imports the Todo schema
-const Todo = require("./models/Todo");
+const Todo = require("./models/Todo.js");
 
 // Gets all the todos with the .find() method
 app.get('/todos', async (req, res) => {
