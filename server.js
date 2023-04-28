@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require ('cors');
@@ -8,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connects to the MongoDB database
-mongoose.connect("mongodb://127.0.0.1:27017/mern-todo",{
+mongoose.connect(`mongodb://${process.env.MONGO_URI}/mern-todo`,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -53,5 +54,13 @@ app.get('/todo/complete/:id', async (req, res) => {
 
     res.json(todo);
 });
+
+if (process.env.NODE_ENV === 'production') {
+    //*Set static folder up in production
+    app.use(express.static('client/build'));
+
+    app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'client', 'build','index.html')));
+  }
+
 
 app.listen(3001, () => console.log("Server started on port 3001"));
