@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
-const cors = require ('cors');
+const cors = require('cors');
 
 const app = express();
 
@@ -56,13 +57,34 @@ app.get('/todo/complete/:id', async (req, res) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-    //*Set static folder up in production
-    app.use(express.static('client/build'));
+    // Serve the static files from the React app
+    app.use(express.static(path.join(__dirname, 'client/build')));
+  
+    // Route all other requests to React app's index.html file
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+      res.send('API running');
+    });
+}
 
-    app.get('*', (req,res) => res.sendFile(path.resolve(__dirname, 'client', 'build','index.html')));
-  }
+// // Serve the static files from the React app
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
+// // An API endpoint that returns some data
+// app.get('/api/data', (req,res) => {
+//   res.json({data: "Hello World!"});
+// });
+
+// // Handles any requests that don't match the ones above
+// app.get('*', (req,res) =>{
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
-  });
+});

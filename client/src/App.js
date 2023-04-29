@@ -4,7 +4,9 @@ import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
 if (process.env.NODE_ENV === 'production') disableReactDevTools();
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = window.location.origin;
+
+console.log(API_BASE);
 
 function App() {
 
