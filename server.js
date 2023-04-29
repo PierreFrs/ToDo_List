@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // Connects to the MongoDB database
-mongoose.connect(`mongodb://${process.env.MONGO_URI}/mern-todo`,{
+mongoose.connect(`mongodb+srv://pierrefraisse90:${process.env.MONGO_URI_PASSWORD}@cluster0.dgitygx.mongodb.net/?retryWrites=true&w=majority`,{
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
